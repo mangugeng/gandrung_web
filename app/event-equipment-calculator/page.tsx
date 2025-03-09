@@ -23,12 +23,29 @@ interface Equipment {
   };
 }
 
+interface AdditionalCost {
+  checked: boolean;
+  cost?: number;
+  multiplier?: number;
+}
+
+interface AdditionalCosts {
+  visualDirector: AdditionalCost;
+  visualJockey: AdditionalCost;
+  crewSetting: AdditionalCost;
+  crewStandby: AdditionalCost;
+  earlySetup50: AdditionalCost;
+  earlySetup30: AdditionalCost;
+  loadingAccess: AdditionalCost;
+  hdmiCable: AdditionalCost;
+}
+
 export default function EventEquipmentCalculator() {
   const [days, setDays] = useState<string>('1');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showAdditionalCosts, setShowAdditionalCosts] = useState<boolean>(false);
   const [showOrderSummary, setShowOrderSummary] = useState<boolean>(false);
-  const [additionalCosts, setAdditionalCosts] = useState({
+  const [additionalCosts, setAdditionalCosts] = useState<AdditionalCosts>({
     visualDirector: { checked: false, cost: 2500000 },
     visualJockey: { checked: false, cost: 1500000 },
     crewSetting: { checked: false, cost: 300000 },
@@ -201,7 +218,7 @@ export default function EventEquipmentCalculator() {
     setEquipment(newEquipment);
   };
 
-  const toggleAdditionalCost = (key: string) => {
+  const toggleAdditionalCost = (key: keyof AdditionalCosts) => {
     setAdditionalCosts(prev => ({
       ...prev,
       [key]: { ...prev[key], checked: !prev[key].checked }
