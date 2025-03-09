@@ -218,10 +218,10 @@ export default function EventEquipmentCalculator() {
     setEquipment(newEquipment);
   };
 
-  const toggleAdditionalCost = (key: string) => {
+  const toggleAdditionalCost = (key: keyof AdditionalCosts) => {
     setAdditionalCosts(prev => ({
       ...prev,
-      [key]: { ...prev[key as keyof typeof prev], checked: !prev[key as keyof typeof prev].checked }
+      [key]: { ...prev[key], checked: !prev[key].checked }
     }));
   };
 
