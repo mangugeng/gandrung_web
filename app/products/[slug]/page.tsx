@@ -1,9 +1,28 @@
 import Link from 'next/link';
 import { products } from '../../data/products';
 import ProductDetailClient from '../../components/ProductDetailClient';
+import { Metadata } from 'next';
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const product = products[params.slug as keyof typeof products];
+  
+  return {
+    title: product ? `${product.title} - Gandrung Event` : 'Produk Tidak Ditemukan',
+    description: product?.description || 'Halaman produk tidak ditemukan',
+  };
+}
+
+interface Props {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default function Page(props: Props) {
+  const product = products[props.params.slug as keyof typeof products];
 
   if (!product) {
     return (

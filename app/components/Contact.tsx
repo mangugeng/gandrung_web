@@ -14,16 +14,12 @@ const Contact = () => {
     message: '',
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: 'success' | 'error' | null;
-    message: string;
-  }>({ type: null, message: '' });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: '' });
+    setLoading(true);
 
     try {
       await emailjs.send(
@@ -39,10 +35,7 @@ const Contact = () => {
         'YOUR_PUBLIC_KEY' // Ganti dengan Public Key dari EmailJS
       );
 
-      setSubmitStatus({
-        type: 'success',
-        message: 'Pesan Anda telah berhasil dikirim. Kami akan segera menghubungi Anda.',
-      });
+      setSuccess(true);
       setFormData({
         name: '',
         email: '',
@@ -51,12 +44,9 @@ const Contact = () => {
         message: '',
       });
     } catch (error) {
-      setSubmitStatus({
-        type: 'error',
-        message: 'Maaf, terjadi kesalahan. Silakan coba lagi nanti.',
-      });
+      console.error('Maaf, terjadi kesalahan. Silakan coba lagi nanti.', error);
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
@@ -151,13 +141,9 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
           >
             <form onSubmit={handleSubmit} className="space-y-6">
-              {submitStatus.type && (
-                <div
-                  className={`p-4 rounded-md ${
-                    submitStatus.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-                  }`}
-                >
-                  {submitStatus.message}
+              {success && (
+                <div className="p-4 rounded-md bg-green-50 text-green-800">
+                  Pesan Anda telah berhasil dikirim. Kami akan segera menghubungi Anda.
                 </div>
               )}
 
@@ -173,7 +159,7 @@ const Contact = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
-                  disabled={isSubmitting}
+                  disabled={loading}
                 />
               </div>
 
@@ -189,7 +175,7 @@ const Contact = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
-                  disabled={isSubmitting}
+                  disabled={loading}
                 />
               </div>
 
@@ -205,7 +191,7 @@ const Contact = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
-                  disabled={isSubmitting}
+                  disabled={loading}
                 />
               </div>
 
@@ -220,7 +206,7 @@ const Contact = () => {
                   value={formData.company}
                   onChange={handleChange}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                  disabled={isSubmitting}
+                  disabled={loading}
                 />
               </div>
 
@@ -236,21 +222,21 @@ const Contact = () => {
                   rows={4}
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   required
-                  disabled={isSubmitting}
+                  disabled={loading}
                 />
               </div>
 
               <div>
                 <motion.button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={loading}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-                    isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                    loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
                   } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
                 >
-                  {isSubmitting ? 'Mengirim...' : 'Kirim Pesan'}
+                  {loading ? 'Mengirim...' : 'Kirim Pesan'}
                 </motion.button>
               </div>
             </form>
