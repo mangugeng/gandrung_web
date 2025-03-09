@@ -180,9 +180,9 @@ export default function EventEquipmentCalculator() {
       let itemTotal = item.pricePerDay * item.quantity * (daysNum || 1);
       
       // Jika menggunakan early setup, tambahkan biaya
-      if (additionalCosts.earlySetup50.checked) {
+      if (additionalCosts.earlySetup50.checked && additionalCosts.earlySetup50.multiplier) {
         itemTotal *= additionalCosts.earlySetup50.multiplier;
-      } else if (additionalCosts.earlySetup30.checked) {
+      } else if (additionalCosts.earlySetup30.checked && additionalCosts.earlySetup30.multiplier) {
         itemTotal *= additionalCosts.earlySetup30.multiplier;
       }
       
@@ -192,12 +192,18 @@ export default function EventEquipmentCalculator() {
 
   const calculateAdditionalCostsTotal = () => {
     let total = 0;
-    if (additionalCosts.visualDirector.checked) total += additionalCosts.visualDirector.cost;
-    if (additionalCosts.visualJockey.checked) total += additionalCosts.visualJockey.cost;
-    if (additionalCosts.crewSetting.checked) total += additionalCosts.crewSetting.cost;
-    if (additionalCosts.crewStandby.checked) total += additionalCosts.crewStandby.cost;
-    if (additionalCosts.loadingAccess.checked) total += additionalCosts.loadingAccess.cost;
-    if (additionalCosts.hdmiCable.checked) total += additionalCosts.hdmiCable.cost;
+    if (additionalCosts.visualDirector.checked && additionalCosts.visualDirector.cost) 
+      total += additionalCosts.visualDirector.cost;
+    if (additionalCosts.visualJockey.checked && additionalCosts.visualJockey.cost) 
+      total += additionalCosts.visualJockey.cost;
+    if (additionalCosts.crewSetting.checked && additionalCosts.crewSetting.cost) 
+      total += additionalCosts.crewSetting.cost;
+    if (additionalCosts.crewStandby.checked && additionalCosts.crewStandby.cost) 
+      total += additionalCosts.crewStandby.cost;
+    if (additionalCosts.loadingAccess.checked && additionalCosts.loadingAccess.cost) 
+      total += additionalCosts.loadingAccess.cost;
+    if (additionalCosts.hdmiCable.checked && additionalCosts.hdmiCable.cost) 
+      total += additionalCosts.hdmiCable.cost;
     return total;
   };
 
@@ -492,7 +498,7 @@ Mohon informasi lebih lanjut. Terima kasih.`;
                             onChange={() => toggleAdditionalCost('hdmiCable')}
                             className="mr-2"
                           />
-                          Kabel HDMI >20m - Rp 100.000
+                          Kabel HDMI &gt;20m - Rp 100.000
                         </label>
                       </div>
                     </div>

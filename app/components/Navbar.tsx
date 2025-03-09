@@ -29,7 +29,6 @@ const Navbar = () => {
               alt="Gandrung Event Logo"
               width={50}
               height={50}
-              className="w-[50px] h-[50px]"
               style={{ objectFit: 'contain' }}
               priority
             />
@@ -38,7 +37,6 @@ const Navbar = () => {
               alt="Gandrung Event Text Logo"
               width={340}
               height={15}
-              className="block w-[272px] h-[12px] md:w-[340px] md:h-[15px]"
               style={{ objectFit: 'contain' }}
               priority
             />
