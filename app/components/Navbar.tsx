@@ -58,6 +58,9 @@ const Navbar = () => {
             <Link href="/#clients" className="text-white hover:text-blue-200 transition-colors">
               Klien
             </Link>
+            <Link href="/event-equipment-calculator" className="text-white hover:text-blue-200 transition-colors">
+              Equipment Calculator
+            </Link>
             <Link
               href="/#contact"
               className="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors"
@@ -113,6 +116,13 @@ const Navbar = () => {
             onClick={() => setIsOpen(false)}
           >
             Klien
+          </Link>
+          <Link
+            href="/event-equipment-calculator"
+            className="block text-white hover:text-blue-200 transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Equipment Calculator
           </Link>
           <Link
             href="/#contact"
