@@ -40,11 +40,25 @@ interface AdditionalCosts {
   hdmiCable: AdditionalCost;
 }
 
+interface OrderForm {
+  customerName: string;
+  eventName: string;
+  eventDate: string;
+  rehearsalDate: string;
+  eventLocation: string;
+  loadingDate: string;
+  loadingTime: string;
+  unloadingDate: string;
+  unloadingTime: string;
+  picContact: string;
+}
+
 export default function EventEquipmentCalculator() {
   const [days, setDays] = useState<string>('1');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showAdditionalCosts, setShowAdditionalCosts] = useState<boolean>(false);
   const [showOrderSummary, setShowOrderSummary] = useState<boolean>(false);
+  const [showOrderForm, setShowOrderForm] = useState<boolean>(false);
   const [additionalCosts, setAdditionalCosts] = useState<AdditionalCosts>({
     visualDirector: { checked: false, cost: 2500000 },
     visualJockey: { checked: false, cost: 1500000 },
@@ -172,6 +186,19 @@ export default function EventEquipmentCalculator() {
     { name: 'Ruang Ganti 2x3 + Pintu', pricePerDay: 1100000, quantity: 0, category: 'Partisi & Stand' },
   ]);
 
+  const [orderForm, setOrderForm] = useState<OrderForm>({
+    customerName: '',
+    eventName: '',
+    eventDate: '',
+    rehearsalDate: '',
+    eventLocation: '',
+    loadingDate: '',
+    loadingTime: '',
+    unloadingDate: '',
+    unloadingTime: '',
+    picContact: ''
+  });
+
   const categories = ['Semua', ...Array.from(new Set(equipment.map(item => item.category))).sort()];
 
   const calculateSubtotal = () => {
@@ -237,17 +264,36 @@ export default function EventEquipmentCalculator() {
   };
 
   const handleOrder = () => {
-    const selectedItems = getSelectedItems();
-    const message = `Halo, saya ingin memesan peralatan event:
+    setShowOrderForm(true);
+  };
 
-Durasi: ${parseInt(days) || 1} hari
+  const handleSubmitOrder = () => {
+    const selectedItems = getSelectedItems();
+    const message = `*Format Order Peralatan Event*
+
+*Data Pemesan:*
+Nama pemesan: ${orderForm.customerName}
+Nama acara: ${orderForm.eventName}
+Tanggal acara: ${orderForm.eventDate}
+Gladi Bersih: ${orderForm.rehearsalDate}
+
+*List Barang Sewa:*
 ${selectedItems.map(item => `- ${item.name} (${item.quantity}${item.unit ? item.unit.replace('per ', '/') : ' unit'})`).join('\n')}
 
-Biaya Tambahan:
+*Biaya Tambahan:*
 ${additionalCosts.visualDirector.checked ? '- Visual Director (VD)\n' : ''}${additionalCosts.visualJockey.checked ? '- Visual Jockey (VJ)\n' : ''}${additionalCosts.crewSetting.checked ? '- Crew Setting & Transport\n' : ''}${additionalCosts.crewStandby.checked ? '- Crew Standby\n' : ''}${additionalCosts.earlySetup50.checked ? '- Pemasangan H-2 (07-13)\n' : ''}${additionalCosts.earlySetup30.checked ? '- Pemasangan H-2 (14-20)\n' : ''}${additionalCosts.loadingAccess.checked ? '- Akses Loading Tanpa Lift\n' : ''}${additionalCosts.hdmiCable.checked ? '- Kabel HDMI >20m\n' : ''}
-Total Estimasi: Rp ${calculateTotal().toLocaleString('id-ID')}
 
-Mohon informasi lebih lanjut. Terima kasih.`;
+*Detail Lokasi & Waktu:*
+Lokasi event: ${orderForm.eventLocation}
+Tanggal loading: ${orderForm.loadingDate}
+Jam loading: ${orderForm.loadingTime}
+Tanggal Unloading: ${orderForm.unloadingDate}
+Jam Unloading: ${orderForm.unloadingTime}
+No kontak WA PIC lokasi: ${orderForm.picContact}
+
+*Total Estimasi: Rp ${calculateTotal().toLocaleString('id-ID')}*
+
+NB: Ada tambahan biaya untuk Gladi Bersih H-1 (loading H-2)`;
 
     const whatsappUrl = `https://wa.me/+62818212777?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -596,6 +642,161 @@ Mohon informasi lebih lanjut. Terima kasih.`;
         </div>
       </div>
       <Footer />
+
+      {/* Order Form Modal */}
+      {showOrderForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-4">Form Pemesanan Peralatan Event</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nama Pemesan
+                  </label>
+                  <input
+                    type="text"
+                    value={orderForm.customerName}
+                    onChange={(e) => setOrderForm({...orderForm, customerName: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Nama Acara
+                  </label>
+                  <input
+                    type="text"
+                    value={orderForm.eventName}
+                    onChange={(e) => setOrderForm({...orderForm, eventName: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Tanggal Acara
+                  </label>
+                  <input
+                    type="date"
+                    value={orderForm.eventDate}
+                    onChange={(e) => setOrderForm({...orderForm, eventDate: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Gladi Bersih
+                  </label>
+                  <input
+                    type="date"
+                    value={orderForm.rehearsalDate}
+                    onChange={(e) => setOrderForm({...orderForm, rehearsalDate: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Lokasi Event
+                  </label>
+                  <textarea
+                    value={orderForm.eventLocation}
+                    onChange={(e) => setOrderForm({...orderForm, eventLocation: e.target.value})}
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tanggal Loading
+                    </label>
+                    <input
+                      type="date"
+                      value={orderForm.loadingDate}
+                      onChange={(e) => setOrderForm({...orderForm, loadingDate: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Jam Loading
+                    </label>
+                    <input
+                      type="time"
+                      value={orderForm.loadingTime}
+                      onChange={(e) => setOrderForm({...orderForm, loadingTime: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tanggal Unloading
+                    </label>
+                    <input
+                      type="date"
+                      value={orderForm.unloadingDate}
+                      onChange={(e) => setOrderForm({...orderForm, unloadingDate: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Jam Unloading
+                    </label>
+                    <input
+                      type="time"
+                      value={orderForm.unloadingTime}
+                      onChange={(e) => setOrderForm({...orderForm, unloadingTime: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    No Kontak WA PIC Lokasi
+                  </label>
+                  <input
+                    type="tel"
+                    value={orderForm.picContact}
+                    onChange={(e) => setOrderForm({...orderForm, picContact: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Contoh: 08123456789"
+                  />
+                </div>
+
+                <div className="text-sm text-gray-500">
+                  <p>NB: Ada tambahan biaya untuk Gladi Bersih H-1 (loading H-2)</p>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setShowOrderForm(false)}
+                    className="flex-1 py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    onClick={handleSubmitOrder}
+                    className="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                  >
+                    Kirim Pesanan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 } 
