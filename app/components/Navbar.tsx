@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FiMenu, FiX } from 'react-icons/fi';
 
-const Navbar = () => {
+const Navbar = ({ className = '' }: { className?: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -19,7 +19,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/90 backdrop-blur-md' : 'bg-transparent'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/90 backdrop-blur-md' : 'bg-transparent'} ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -44,19 +44,19 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/#about" className="text-white hover:text-blue-200 transition-colors">
+            <Link href="/#about" className={`${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}>
               Tentang Kami
             </Link>
-            <Link href="/#products" className="text-white hover:text-blue-200 transition-colors">
+            <Link href="/#products" className={`${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}>
               Produk
             </Link>
-            <Link href="/#portfolio" className="text-white hover:text-blue-200 transition-colors">
+            <Link href="/#portfolio" className={`${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}>
               Portfolio
             </Link>
-            <Link href="/#clients" className="text-white hover:text-blue-200 transition-colors">
+            <Link href="/#klien" className={`${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}>
               Klien
             </Link>
-            <Link href="/event-equipment-calculator" className="text-white hover:text-blue-200 transition-colors">
+            <Link href="/event-equipment-calculator" className={`${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}>
               Equipment Calculator
             </Link>
             <Link
@@ -71,7 +71,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white hover:text-blue-200 transition-colors"
+              className={`${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}
             >
               {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </button>
@@ -84,40 +84,40 @@ const Navbar = () => {
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : -10 }}
         transition={{ duration: 0.2 }}
-        className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-black/90 backdrop-blur-md`}
+        className={`md:hidden ${isOpen ? 'block' : 'hidden'} ${className?.includes('bg-white') ? 'bg-white/90' : 'bg-black/90'} backdrop-blur-md`}
       >
         <div className="px-4 pt-2 pb-4 space-y-3">
           <Link
             href="/#about"
-            className="block text-white hover:text-blue-200 transition-colors"
+            className={`block ${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}
             onClick={() => setIsOpen(false)}
           >
             Tentang Kami
           </Link>
           <Link
             href="/#products"
-            className="block text-white hover:text-blue-200 transition-colors"
+            className={`block ${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}
             onClick={() => setIsOpen(false)}
           >
             Produk
           </Link>
           <Link
             href="/#portfolio"
-            className="block text-white hover:text-blue-200 transition-colors"
+            className={`block ${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}
             onClick={() => setIsOpen(false)}
           >
             Portfolio
           </Link>
           <Link
-            href="/#clients"
-            className="block text-white hover:text-blue-200 transition-colors"
+            href="/#klien"
+            className={`block ${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}
             onClick={() => setIsOpen(false)}
           >
             Klien
           </Link>
           <Link
             href="/event-equipment-calculator"
-            className="block text-white hover:text-blue-200 transition-colors"
+            className={`block ${className?.includes('text-gray-900') ? 'text-gray-900 hover:text-gray-700' : 'text-white hover:text-blue-200'} transition-colors`}
             onClick={() => setIsOpen(false)}
           >
             Equipment Calculator

@@ -301,10 +301,10 @@ NB: Ada tambahan biaya untuk Gladi Bersih H-1 (loading H-2)`;
 
   return (
     <>
-      <Navbar />
+      <Navbar className="bg-white text-gray-900" />
       <div className="min-h-screen bg-gray-100 pt-20">
         {/* Sticky Header with Total */}
-        <div className="sticky top-0 bg-white shadow-md z-10 py-4 px-4 sm:px-6 lg:px-8">
+        <div className="sticky top-0 bg-gradient-to-b from-gray-200/95 via-gray-100/90 to-white/85 backdrop-blur-md shadow-md z-10 py-4 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

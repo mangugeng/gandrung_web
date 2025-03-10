@@ -7,12 +7,14 @@ import Portfolio from './components/Portfolio';
 import Clients from './components/Clients';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import WhyChooseUs from './components/WhyChooseUs';
 
 export default function Home() {
   return (
     <main>
       <Navbar />
       <Hero />
+      <WhyChooseUs />
       <Products />
       <About />
       <Stats />
